@@ -54,7 +54,8 @@ class Serializer(PythonSerializer):
             super().handle_field(obj, field)
 
     def end_serialization(self):
-        yaml.dump(self.objects, self.stream, Dumper=DjangoSafeDumper, **self.options)
+        yaml.dump(self.objects, self.stream, Dumper=DjangoSafeDumper,
+                  default_flow_style=False, **self.options)
 
     def getvalue(self):
         # Grandparent super
