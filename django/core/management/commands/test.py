@@ -12,17 +12,25 @@ class Command(BaseCommand):
     requires_system_checks = False
     test_runner = None
 
+    def prescan_testrunner_option(self, argv):
+        option = '--testrunner'
+        args = argv[2:]
+        for i, arg in enumerate(args):
+            if arg == option and i + 1 < len(args):
+                return args[i + 1]
+
+            parts = arg.split('=', 2)
+            if len(parts) == 2 and parts[0] == option:
+                return parts[1]
+        return None
+
     def run_from_argv(self, argv):
         """
         Pre-parse the command line to extract the value of the --testrunner
         option. This allows a test runner to define additional command line
         arguments.
         """
-        option = '--testrunner='
-        for arg in argv[2:]:
-            if arg.startswith(option):
-                self.test_runner = arg[len(option):]
-                break
+        self.test_runner = self.prescan_testrunner_option(argv)
         super().run_from_argv(argv)
 
     def add_arguments(self, parser):
