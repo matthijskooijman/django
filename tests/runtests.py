@@ -289,6 +289,7 @@ def django_tests(verbosity, interactive, failfast, keepdb, reverse,
     if not hasattr(settings, 'TEST_RUNNER'):
         settings.TEST_RUNNER = 'django.test.runner.DiscoverRunner'
     TestRunner = get_runner(settings)
+    print("settings", settings.DATABASES)
 
     test_runner = TestRunner(
         verbosity=verbosity,
